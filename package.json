@@ -1,0 +1,22 @@
+{
+  "name": "mysql",
+  "version": "1.0.0",
+  "description": "Homework 10 - Node.js &amp; MySQL",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Incontextseo/node-mysql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Incontextseo/node-mysql/issues"
+  },
+  "homepage": "https://github.com/Incontextseo/node-mysql#readme",
+  "dependencies": {
+    "inquirer": "^6.4.1"
+  }
+}
