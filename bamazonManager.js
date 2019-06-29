@@ -42,12 +42,12 @@ function menuOptions() {
         menuOptions();
       }
       else if(answer.menu === "Add to Inventory") {
-        console.log("Add to Inventory")
-        menuOptions();
+        // console.log("Add to Inventory")
+        addInventory();
       }
       else if(answer.menu === "Add New Product") {
         console.log("Add New Product")
-        menuOptions();
+        createProduct();
       }
       else {
           console.log("Thank you. Have a nice day!")
@@ -59,77 +59,110 @@ function menuOptions() {
 function lowInventory() {
     console.log("lowInventory function")
     connection.query(
-        "SELECT * FROM products WHERE ? BETWEEN ? AND ?",
+        "SELECT * FROM products WHERE stock_quantity BETWEEN ? AND ?",
         [
-                "stock_quality", 0, 100
+            0, 100
         ],
         function(err, res) {
         if (err) throw err;
         console.log(res);
     })
-}
+};
 
 function viewInventory() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         console.log(res);
     })
+};
+
+function addInventory() {
+    // console.log("Inserting a new product...\n");
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+        inquirer
+        .prompt([
+            {
+                name: "update_id",
+                type: "input",
+                message: "What is ID of the product where you want to add inventory?",
+            },
+            {
+                name: "update_inventory",
+                type: "input",
+                message: "How much inventory are you adding?",
+            }
+        ])
+        .then(function(answer) {
+            // get the information of the chosen item
+            var chosenItem;
+            for (var i = 0; i < res.length; i++) {
+                if (answer.update_id == res[i].id) {
+                    chosenItem = res[i];
+                var newStock = chosenItem.stock_quantity + parseInt(answer.update_inventory)
+                console.log(newStock)
+                    connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [
+                        {
+                            stock_quantity: newStock, 
+                        },
+                        {
+                            id: answer.update_id, 
+                        }],
+                        function(err, res) {
+                        console.log(res.affectedRows + " product inserted!\n");
+                        if (err) throw err;
+                        console.log(res);
+                        menuOptions();
+                        }
+                    )
+                }
+            } 
+        })
+    })
 }
 
-// function placeOrder() {
-//   connection.query("SELECT * FROM products", function(err, res) {
-//     if (err) throw err;
-//     console.log(res);
-//     inquirer
-//     .prompt([
-//         {
-//             name: "id",
-//             type: "input",
-//             message: "What is the ID of the item you would like to buy?",
-//         },
-//         {
-//             name: "qty",
-//             type: "input",
-//             message: "How many units would you like to buy?"
-//         }
-//     ])
-//     .then(function(answer) {
-//         // get the information of the chosen item
-//         var chosenItem;
-//         for (var i = 0; i < res.length; i++) {
-//             if (answer.id == res[i].id) {
-//                 chosenItem = res[i];
-//                 // determine if there is enough inventory in stock
-//                 if (chosenItem.stock_quality > parseInt(answer.qty)) {
-//                     // There is enough in stock so process the , so update db, let the user know, and start over
-//                     var newStock = chosenItem.stock_quality - answer.qty
-//                     connection.query(
-//                         "UPDATE products SET ? WHERE ?",
-//                         [
-//                             {
-//                                 stock_quality: newStock
-//                             },
-//                             {
-//                                 id: chosenItem.id
-//                             }
-//                         ],
-//                         function(error) {
-//                             if (error) throw err;
-//                             var total = chosenItem.price * answer.qty
-//                             console.log("Your Order has been placed! You owe $" + total +". The new stock number is " + newStock)
-//                             continueShopping();
-//                         }
-//                     );
-//                 }
-//                 else {
-//                     // bid wasn't high enough, so apologize and start over
-//                     console.log("Insufficient Quantity! Sorry, our current inventory for this product is " + chosenItem.stock_quality + ". Please enter a lower quantity.");
-//                     // start();
-//                     continueShopping();
-//                 }
-//             }
-//         }
-//     })    
-
-//   });
-// }
+function createProduct() {
+    console.log("Inserting a new product...\n");
+    inquirer
+    .prompt([
+        {
+            name: "product",
+            type: "input",
+            message: "What is the name of the product?",
+        },
+        {
+            name: "department",
+            type: "input",
+            message: "What is the product's department?",
+        },
+        {
+            name: "price",
+            type: "input",
+            message: "What is the product's price per unit?",
+        },
+        {
+            name: "stock",
+            type: "input",
+            message: "How many units are available for sale?"
+        }
+    ])
+    .then(function(answer) {
+        connection.query(
+            "INSERT INTO products SET ?",
+            {
+              product_name: answer.product, 
+              department_name: answer.department, 
+              price: answer.price, 
+              stock_quantity: answer.stock,
+            },
+            function(err, res) {
+              console.log(res.affectedRows + " product inserted!\n");
+              if (err) throw err;
+              console.log(res);
+              menuOptions();
+            }
+        )  
+    })
+}
