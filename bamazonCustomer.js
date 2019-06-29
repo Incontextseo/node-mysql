@@ -64,14 +64,14 @@ function placeOrder() {
             if (answer.id == res[i].id) {
                 chosenItem = res[i];
                 // determine if there is enough inventory in stock
-                if (chosenItem.stock_quality > parseInt(answer.qty)) {
+                if (chosenItem.stock_quantity > parseInt(answer.qty)) {
                     // There is enough in stock so process the , so update db, let the user know, and start over
-                    var newStock = chosenItem.stock_quality - answer.qty
+                    var newStock = chosenItem.stock_quantity - answer.qty
                     connection.query(
                         "UPDATE products SET ? WHERE ?",
                         [
                             {
-                                stock_quality: newStock
+                                stock_quantity: newStock
                             },
                             {
                                 id: chosenItem.id
@@ -87,7 +87,7 @@ function placeOrder() {
                 }
                 else {
                     // bid wasn't high enough, so apologize and start over
-                    console.log("Insufficient Quantity! Sorry, our current inventory for this product is " + chosenItem.stock_quality + ". Please enter a lower quantity.");
+                    console.log("Insufficient Quantity! Sorry, our current inventory for this product is " + chosenItem.stock_quantity + ". Please enter a lower quantity.");
                     // start();
                     continueShopping();
                 }
