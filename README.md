@@ -1,5 +1,9 @@
 # Homework 10 - Node.js & MySQL
 
+* Please install mysql and inquirer to run this application.
+* Please use included schema.sql and seeds.sql files to create the bamazon_DB.
+* Please connect to the mysql DB with your credentials before trying to place an order.
+
 ## bamazonCustomer.js
 * Upon launch of the javascript file, the user will be shown the list of products available.
 * User will be asked what the ID is of the product that they would like to purchase.
