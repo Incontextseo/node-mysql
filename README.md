@@ -5,6 +5,7 @@
 * Please connect to the mysql bamazon_DB with your credentials before trying to place an order, view or update inventory, or reviewing profit by department. 
 
 ## bamazonCustomer.js
+* Video File: https://github.com/Incontextseo/node-mysql/blob/master/bamazoncustomer-vid.flv
 * Upon launch of the javascript file, the user will be shown the list of products available.
 * User will be asked what the ID is of the product that they would like to purchase.
 * User will be asked what quantity of units they would like to purchase of that product.
@@ -13,6 +14,7 @@
 * Once the user has submitted an order, regardless of whether it was processed, they are asked whether they want to [ORDER] again to continue shopping (Go to the beginning of the order process) or [EXIT] the application.
 
 ## bamazonManager.js
+* https://github.com/Incontextseo/node-mysql/blob/master/bamazonmanager-vid.flv
 * Upon launch the Manager will be asked what course of action they want to take:
     * View Inventory - Shows all current inventory by id, name, price, and stock_quantity.
     * View Low Inventory - Shows all current inventory with a stock_quantity less than 5 units.
